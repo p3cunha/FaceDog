@@ -1,18 +1,17 @@
 import React from "react";
-import { ProductsContext, ProductsStorage } from "./Contexts/ProductsContext";
+import Input from "./components/Form/Input";
+import Select from "./components/Form/Select";
 
 const App = () => {
-  const productsContext = React.useContext(ProductsContext);
-  console.log(productsContext);
+  const [name, setName] = React.useState("");
+  const [select, setSelect] = React.useState('')
+
   return (
-    <React.Fragment>
-      <ProductsStorage>
-        {productsContext?.products?.fotos?.map((product) => (
-          <p key={product.titulo}>{product.titulo}</p>
-        ))}
-      </ProductsStorage>
-    </React.Fragment>
-  );
+    <>
+    <Select options={['Selecione', 'Pedro', 'Carol']} value={select} setValue={setSelect} optionDisabled={0} />
+    <Input label="Nome" id="name" name="name" value={name} setValue={setName} />
+    </>
+  )
 };
 
 export default App;
