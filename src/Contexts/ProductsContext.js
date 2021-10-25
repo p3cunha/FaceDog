@@ -5,10 +5,13 @@ import useLocalStorage from "../Hooks/UseLocalStorage";
 export const ProductsContext = React.createContext();
 
 export const ProductsStorage = ({ children }) => {
+  const [product, setProduct] = useLocalStorage("product", "loló");
   const { data: products, request } = useFetch();
-  const [product, setProduct] = useLocalStorage("product", "pica puta");
+  React.useEffect(() => {
+    request("https://ranekapi.origamid.dev/json/api/produto/notebook");
+  }, [request]);
 
-  console.log("product in storage", product);
+  console.log("products", products);
 
   return (
     <ProductsContext.Provider value={{ products, setProduct }}>
