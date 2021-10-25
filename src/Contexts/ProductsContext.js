@@ -5,13 +5,11 @@ import useLocalStorage from "../Hooks/UseLocalStorage";
 export const ProductsContext = React.createContext();
 
 export const ProductsStorage = ({ children }) => {
-  const { data: products, request } = useFetch();
-  const [product, setProduct] = useLocalStorage("product", "pica puta");
-
-  console.log("product in storage", product);
+  // const { data: products, request } = useFetch();
+ 
 
   return (
-    <ProductsContext.Provider value={{ products, setProduct }}>
+    <ProductsContext.Provider >
       {children}
     </ProductsContext.Provider>
   );

@@ -1,24 +1,17 @@
 import React from "react";
-import Produtos from "./components/Produtos";
-import { ProductsContext, ProductsStorage } from "./Contexts/ProductsContext";
-import useFetch from "./Hooks/UseFetch";
-import useLocalStorage from "./Hooks/UseLocalStorage";
+import Input from "./components/Form/Input";
+import Select from "./components/Form/Select";
 
 const App = () => {
-  const { data: products, error, load, request } = useFetch();
-  React.useEffect(() => {
-    request("https://ranekapi.origamid.dev/json/api/produto/notebook");
-  }, [request]);
+  const [name, setName] = React.useState("");
+  const [select, setSelect] = React.useState('')
 
   return (
-    <React.Fragment>
-      <ProductsStorage>
-        {products?.map((product) => (
-          <p>{product}</p>
-        ))}
-      </ProductsStorage>
-    </React.Fragment>
-  );
+    <>
+    <Select options={['Selecione', 'Pedro', 'Carol']} value={select} setValue={setSelect} optionDisabled={0} />
+    <Input label="Nome" id="name" name="name" value={name} setValue={setName} />
+    </>
+  )
 };
 
 export default App;
