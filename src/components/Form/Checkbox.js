@@ -1,36 +1,29 @@
 import React from "react";
 
-function Checkbox() {
-    const coresArray = ["azul", "roxo", "laranja", "verde", "vermelho", "cinza"];
-    const [cores, setCores] = React.useState([]);
+function Checkbox({ options, value, setValue }) {
 
     function handleChange({ target }) {
         target.checked
-            ? setCores([...cores, target.value])
-            : setCores(cores.filter((cor) => cor !== target.value));
+            ? setValue([...value, target.value])
+            : setValue(value.filter((option) => option !== target.value));
     }
 
-    const handleChecked = (cor) => cores.includes(cor);
+    const handleChecked = (option) => value.includes(option);
 
     return (
-        <form>
-            {coresArray.map((cor) => (
-                <label key={cor} style={{ textTransform: "capitalize" }}>
+        <>
+            {options.map((option) => (
+                <label key={option} style={{ textTransform: "capitalize" }}>
                     <input
                         type="checkbox"
-                        value={cor}
-                        checked={handleChecked(cor)}
+                        value={option}
+                        checked={handleChecked(option)}
                         onChange={handleChange}
                     />
-                    {cor}
+                    {option}
                 </label>
             ))}
-            <ul>
-                {cores.map((cor) => (
-                    <li key={cor}>{cor}</li>
-                ))}
-            </ul>
-        </form>
+        </>
     );
 }
 

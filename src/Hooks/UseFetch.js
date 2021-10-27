@@ -24,7 +24,15 @@ const useFetch = () => {
     }
   }, []);
 
-  return { data, loading, error, request };
+  const POST = (url, body, headers = { "Content-Type": "application/json" }) => {
+    request(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+  }
+
+  return { data, loading, error, POST, request };
 };
 
 export default useFetch;

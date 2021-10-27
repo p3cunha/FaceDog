@@ -16,21 +16,15 @@ export default function Form() {
     const [form, setForm] = React.useState(
         formFields.reduce((acc, curr) => ({ ...acc, [curr.value]: "" }), {})
     );
-    const { data, loading, error, request } = useFetch();
+    const { data, loading, error, request, POST } = useFetch();
     const handleFormChange = ({ target: { id, value } }) =>
         setForm({ ...form, [id]: value });
     const handleSubmit = (event) => {
         event.preventDefault();
-        request("https://ranekapi.origamid.dev/json/api/usuario", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(form),
-        });
+        POST("https://ranekapi.origamid.dev/json/api/usuario", form)
     };
 
-    return (
+    return (    
         <React.Fragment>
             <form onSubmit={handleSubmit}>
                 {formFields.map(({ value, label, type }) => (
