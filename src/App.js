@@ -1,51 +1,88 @@
 import React from "react";
-import Checkbox from "./components/Form/Checkbox";
-import Form from "./components/Form/Form";
-import Input from "./components/Form/Input";
 import Radio from "./components/Form/Radio";
-import Select from "./components/Form/Select";
 
 const App = () => {
-  const [cep, setCep] = React.useState("");
-  const [error, setError] = React.useState(null);
+  const [page, setPage] = React.useState(0);
+  const [questionPicked, setQuestionPicked] = React.useState(null);
+  const [grade, setGrade] = React.useState(0);
 
-  function validateCep(value) {
-    if (value.length === 0) {
-      setError("Preencha um valor");
-      return false;
-    } else if (!/^\d{5}-?\d{3}$/.test(value)) {
-      setError("Preencha um cep válido");
-      return false;
-    } else {
-      setError(null);
-      return true;
-    }
-  }
+  const nextPage = (event) => {
+    event.preventDefault();
+    if (page < perguntas.length) setPage(page + 1);
+    if (questionPicked === perguntas[page].resposta) setGrade(grade + 1);
+  };
 
-  function handleBlur({ target: { value } }) {
-    validateCep(value);
-  }
+  const questionsFinished = Boolean(page === perguntas.length);
 
-  function handleChange({ target: { value } }) {
-    if (error) validateCep(value);
-    setCep(value);
-  }
   return (
     <>
-      <form>
-        <Input
-          label="CEP"
-          id="cep"
-          type="text"
-          value={cep}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {error && <p>{error}</p>}
-        <button>Enviar</button>
-      </form>
+      {!questionsFinished && (
+        <form onSubmit={nextPage}>
+          <fieldset
+            style={{
+              marginBottom: "1rem",
+              padding: "2rem",
+              border: "2px solid #eee",
+            }}
+          >
+            <legend style={{ fontWeight: "bold" }}>
+              {perguntas[page].pergunta}
+            </legend>
+            <div style={{ fontFamily: "monospace" }}>
+              <Radio
+                options={perguntas[page].options}
+                value={questionPicked}
+                setValue={setQuestionPicked}
+              />
+            </div>
+          </fieldset>
+          <button disabled={!perguntas[page].options.includes(questionPicked)}>
+            Próxima
+          </button>
+        </form>
+      )}
+      {questionsFinished && (
+        <div>
+          Você acertou {grade} de {perguntas.length}!
+        </div>
+      )}
     </>
   );
 };
 
 export default App;
+
+const perguntas = [
+  {
+    pergunta: "Qual método é utilizado para criar componentes?",
+    options: [
+      "React.makeComponent()",
+      "React.createComponent()",
+      "React.createElement()",
+    ],
+    resposta: "React.createElement()",
+    id: "p1",
+  },
+  {
+    pergunta: "Como importamos um componente externo?",
+    options: [
+      'import Component from "./Component"',
+      'require("./Component")',
+      'import "./Component"',
+    ],
+    resposta: 'import Component from "./Component"',
+    id: "p2",
+  },
+  {
+    pergunta: "Qual hook não é nativo?",
+    options: ["useEffect()", "useFetch()", "useCallback()"],
+    resposta: "useFetch()",
+    id: "p3",
+  },
+  {
+    pergunta: "Qual palavra deve ser utilizada para criarmos um hook?",
+    options: ["set", "get", "use"],
+    resposta: "use",
+    id: "p4",
+  },
+];
